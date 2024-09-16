@@ -1,6 +1,6 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import React from 'react'
+import { Box, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
 const LinkList = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -8,7 +8,7 @@ const LinkList = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   marginTop: theme.spacing(4),
-}));
+}))
 
 const PageLink = styled('a')(({ theme }) => ({
   color: theme.palette.text.primary,
@@ -18,7 +18,7 @@ const PageLink = styled('a')(({ theme }) => ({
   '&:hover': {
     textDecoration: 'underline',
   },
-}));
+}))
 
 function Home() {
   return (
@@ -30,7 +30,7 @@ function Home() {
         <PageLink href="/dice" >Dice</PageLink>
       </LinkList>
     </Box>
-  );
+  )
 }
 
-export default Home;
+export default Home

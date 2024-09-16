@@ -1,10 +1,10 @@
-import React from 'react';
-import { CssBaseline, Box } from '@mui/material';
-import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React from 'react'
+import { CssBaseline, Box } from '@mui/material'
+import { styled, ThemeProvider, createTheme } from '@mui/material/styles'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
-import Home from './pages/Home'; 
-import Dice from './components/Dice/Dice.jsx';
+import Home from './pages/Home' 
+import Dice from './components/Dice/Dice.jsx'
 
 const theme = createTheme({
   palette: {
@@ -15,7 +15,7 @@ const theme = createTheme({
       primary: '#F5F5F5',
     },
   },
-});
+})
 
 const Root = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -27,7 +27,7 @@ const Root = styled(Box)(({ theme }) => ({
   width: '100vw',
   maxWidth: '100vw', // Ensures full width
   overflow: 'hidden',
-}));
+}))
 
 const Content = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -36,7 +36,7 @@ const Content = styled(Box)(({ theme }) => ({
   // justifyContent: 'center',
   flex: 1,
   padding: theme.spacing(3),
-}));
+}))
 
 function App() {
   return (
@@ -53,7 +53,7 @@ function App() {
         </Root>
       </Router>
     </ThemeProvider>
-  );
+  )
 }
 
-export default App;
+export default App
