@@ -15,6 +15,7 @@ function Dice({
   customDieFaces = false,
 }) {
 
+  const [isRolling, setIsRolling] = useState(false)
   const [diceValues, setDiceValues] = useState(
     Array(numberOfDice).fill(defaultDieValue) 
   )
@@ -41,6 +42,7 @@ function Dice({
   }
 
   const handleRoll = () => {
+    setIsRolling(true)
     playSFX()
     setDiceValues(diceValues.map(() => Math.floor(Math.random() * numberOfFaces) + 1))
     calculateTotal()

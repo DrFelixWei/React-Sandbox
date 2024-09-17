@@ -22,13 +22,15 @@ const Die = ({
     fontWeight: 'bold',
     transition: `transform ${animationDuration}ms ease-in-out`,
   }
+  const rollStyle = { 
 
-
-  // Style state management
+  } 
+  // Animation effect
   const [style, setStyle] = useState(baseStyle)
-
-  // Handle animation effect
-
+  useEffect(() => {
+    if (animate) {
+    }
+  }, [])
 
   return (
     <Box style={style}>
