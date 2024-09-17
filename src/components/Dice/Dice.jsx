@@ -12,6 +12,7 @@ function Dice({
   defaultDieValue = 1,
   dieSize = 100,
   rowWidth = '400px', 
+  customDieFaces = false,
 }) {
 
   const [diceValues, setDiceValues] = useState(
@@ -27,11 +28,11 @@ function Dice({
       ? sfxSingle
       : numberOfDice >= 2 && numberOfDice <= 4
       ? sfxThree
-      : sfxSix;
-    const audio = new Audio(diceSound);
+      : sfxSix
+    const audio = new Audio(diceSound)
     console.log(audio.volume)
-    audio.play();
-  };
+    audio.play()
+  }
   
 
   const calculateTotal = () => {
@@ -59,9 +60,14 @@ function Dice({
           maxWidth: rowWidth, 
           gap: 1, 
         }}
+        customDieFaces={customDieFaces}
       >
         {diceValues.map((value, index) => (
-          <Die key={index} value={value} dieSize={dieSize} />
+          <Die 
+            key={index} 
+            value={value} 
+            dieSize={dieSize} 
+          />
         ))}
       </Box>
     </>
