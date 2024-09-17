@@ -23,26 +23,12 @@ const Die = ({
     transition: `transform ${animationDuration}ms ease-in-out`,
   }
 
-  const rollStyle = animate ? { animation: `rollAnimation ${animationDuration}ms ease-in-out` } : {}
 
   // Style state management
   const [style, setStyle] = useState(baseStyle)
 
   // Handle animation effect
-  useEffect(() => {
-    if (animate) {
-      setStyle((prevStyle) => ({
-        ...prevStyle,
-        ...rollStyle,
-      }))
 
-      const timer = setTimeout(() => {
-        setStyle(baseStyle)
-      }, animationDuration)
-
-      return () => clearTimeout(timer)
-    }
-  }, [animate, animationDuration, baseStyle])
 
   return (
     <Box style={style}>

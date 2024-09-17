@@ -30,7 +30,6 @@ function Dice({
       ? sfxThree
       : sfxSix
     const audio = new Audio(diceSound)
-    console.log(audio.volume)
     audio.play()
   }
   
