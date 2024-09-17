@@ -1,44 +1,69 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Box } from '@mui/material'
 import Die from './Die'
-import diceSound from './sfx/sfx_dice_felt_single_1.mp3' // Import the MP3 file
 
-function Dice() {
-  const NUMBER_OF_DICE = 3 // Example number of dice
+import sfxSingle from './sfx/sfx_dice_felt_single_1.mp3'
+import sfxThree from './sfx/sfx_dice_felt_three_1.mp3'
+import sfxSix from './sfx/sfx_dice_felt_six_1.mp3'
+
+function Dice({
+  numberOfDice = 3, 
+  numberOfFaces = 6, 
+  defaultDieValue = 1,
+  dieSize = 100,
+  rowWidth = '400px', 
+}) {
 
   const [diceValues, setDiceValues] = useState(
-    Array(NUMBER_OF_DICE).fill(1) // Initial values for dice
+    Array(numberOfDice).fill(defaultDieValue) 
   )
+  useEffect(() => {
+    setDiceValues(Array(numberOfDice).fill(1)) 
+    calculateTotal()
+  }, [numberOfDice])
 
   const playSFX = () => {
-    const audio = new Audio(diceSound)
-    audio.play()
+    const diceSound = numberOfDice === 1
+      ? sfxSingle
+      : numberOfDice >= 2 && numberOfDice <= 4
+      ? sfxThree
+      : sfxSix;
+    const audio = new Audio(diceSound);
+    console.log(audio.volume)
+    audio.play();
+  };
+  
+
+  const calculateTotal = () => {
+    const total = diceValues.reduce((acc, curr) => acc + curr)
+    console.log('Total:', total)
+    return total
   }
 
   const handleRoll = () => {
     playSFX()
-    // Roll all dice and update their values
-    setDiceValues(diceValues.map(() => Math.floor(Math.random() * 6) + 1))
+    setDiceValues(diceValues.map(() => Math.floor(Math.random() * numberOfFaces) + 1))
+    calculateTotal()
   }
 
   return (
     <>
-
       <Box
         display="flex"
-        flexDirection="row"
+        flexWrap="wrap"
         alignItems="center"
         justifyContent="center"
         width="100%"
-        onClick={handleRoll} // Handle roll on click of the container
+        onClick={handleRoll}
+        sx={{
+          maxWidth: rowWidth, 
+          gap: 1, 
+        }}
       >
         {diceValues.map((value, index) => (
-          <Die key={index} value={value} />
+          <Die key={index} value={value} dieSize={dieSize} />
         ))}
       </Box>
-
-
-
     </>
   )
 }
