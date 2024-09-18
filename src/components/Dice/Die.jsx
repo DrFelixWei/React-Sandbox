@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Box } from '@mui/material'
 import defaultFaces from './faces/default'
-import './Die.scss' // Add this line to import the SCSS file
+import './Die.scss' 
 
 const Die = ({ 
   value, 
@@ -9,22 +9,18 @@ const Die = ({
   animate = true, 
   animationDuration = 500, 
   enableFaces = true, 
-  customFaces 
+  customDieFaces, 
 }) => {
-  const faces = customFaces || defaultFaces
+  const faces = customDieFaces || defaultFaces
   const [rolling, setRolling] = useState(false)
-  const [faceImage, setFaceImage] = useState(faces[value - 1])
 
   useEffect(() => {
     if (animate) {
       setRolling(true)
       setTimeout(() => {
-        setFaceImage(faces[value - 1])
         setRolling(false)
       }, animationDuration)
-    } else {
-      setFaceImage(faces[value - 1])
-    }
+    } 
   }, [value, animate, animationDuration, faces])
 
   return (
