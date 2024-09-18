@@ -1,50 +1,50 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import defaultFaces from './faces/default'
+import './Die.scss' // Add this line to import the SCSS file
 
 const Die = ({ 
   value, 
-  dieSize = 60,             // Default size of the die
-  animate = true,           // Enable/disable animation
-  animationDuration = 500,  // Animation duration in milliseconds
-  enableFaces = true,       // Enable/disable custom faces
-  customFaces,              
+  dieSize = 60, 
+  animate = true, 
+  animationDuration = 500, 
+  enableFaces = true, 
+  customFaces 
 }) => {
-
   const faces = customFaces || defaultFaces
+  const [rolling, setRolling] = useState(false)
   const [faceImage, setFaceImage] = useState(faces[value - 1])
-  useEffect(() => { 
-    setFaceImage(faces[value - 1])
-  }, [value])
 
-  // Update baseStyle when faceImage changes
-  const baseStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: `${dieSize}px`,
-    height: `${dieSize}px`,
-    border: '1px solid black',
-    borderRadius: '8px',
-    margin: '5px',
-    color: 'black',
-    backgroundColor: 'white',
-    fontWeight: 'bold',
-    transition: `transform ${animationDuration}ms ease-in-out`,
-    backgroundImage: faceImage ? `url(${faceImage})` : 'none',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  }
+  useEffect(() => {
+    if (animate) {
+      setRolling(true)
+      setTimeout(() => {
+        setFaceImage(faces[value - 1])
+        setRolling(false)
+      }, animationDuration)
+    } else {
+      setFaceImage(faces[value - 1])
+    }
+  }, [value, animate, animationDuration, faces])
 
   return (
-    <Box style={baseStyle}>
-      {
-        !enableFaces && (
-          <Typography style={{ fontSize: `${dieSize * 0.5}px` }}>
-            {value}
-          </Typography>
-        )
-      }
+    <Box
+      className={`die-container ${rolling ? 'rolling' : `face-${value}`}`}
+      style={{ width: `${dieSize}px`, height: `${dieSize}px` }}
+    >
+      <div className="cube" style={{ '--dieSize': `${dieSize}px`, '--animationDuration': `${animationDuration}ms` }}>
+        {[...Array(6)].map((_, index) => (
+          <div
+            key={index}
+            className={`face face-${index + 1}`}
+            style={{
+              backgroundImage: `url(${faces[index]})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          ></div>
+        ))}
+      </div>
     </Box>
   )
 }

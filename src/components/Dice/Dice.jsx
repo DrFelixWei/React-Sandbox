@@ -14,11 +14,11 @@ function Dice({
   rowWidth = '400px', 
   customDieFaces = false,
 }) {
-
   const [isRolling, setIsRolling] = useState(false)
   const [diceValues, setDiceValues] = useState(
     Array(numberOfDice).fill(defaultDieValue) 
   )
+  const [rollKey, setRollKey] = useState(0)  // Key to force re-render of Die components
 
   useEffect(() => {
     setDiceValues(Array(numberOfDice).fill(defaultDieValue)) 
@@ -39,7 +39,7 @@ function Dice({
     const audio = new Audio(diceSound)
     audio.play()
   }
-  
+
   const calculateTotal = () => {
     const total = diceValues.reduce((acc, curr) => acc + curr, 0)
     // console.log('Total:', total)
@@ -49,10 +49,15 @@ function Dice({
   const handleRoll = () => {
     setIsRolling(true)
     playSFX()
+    
     setDiceValues(prevDiceValues => {
       const newValues = prevDiceValues.map(() => Math.floor(Math.random() * numberOfFaces) + 1)
       return newValues
     })
+
+    // Force re-render of Die components by changing the rollKey
+    setRollKey(prevKey => prevKey + 1)
+
     setIsRolling(false)
   }
 
@@ -67,13 +72,13 @@ function Dice({
         onClick={handleRoll}
         sx={{
           maxWidth: rowWidth, 
-          gap: 1, 
+          gap: 3, 
         }}
         customDieFaces={customDieFaces}
       >
         {diceValues.map((value, index) => (
           <Die 
-            key={index} 
+            key={`${index}-${rollKey}`}  // Use rollKey to force re-render
             value={value} 
             dieSize={dieSize} 
           />
