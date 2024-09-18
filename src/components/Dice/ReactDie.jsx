@@ -28,6 +28,7 @@ const ReactDie = () => {
       onRoll={handleRoll}
       faces={faces}
       sound={diceSound}
+      triggers={['Enter']}
     />
   )
 }
