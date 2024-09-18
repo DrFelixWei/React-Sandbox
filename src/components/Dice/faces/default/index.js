@@ -5,7 +5,7 @@ import face4 from './4.png'
 import face5 from './5.png'
 import face6 from './6.png'
 
-const faces = [
+const defaultFaces = [
   face1,
   face2,
   face3,
@@ -14,4 +14,4 @@ const faces = [
   face6,
 ]
 
-export default faces
+export default defaultFaces

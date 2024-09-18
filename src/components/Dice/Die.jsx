@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Typography } from '@mui/material'
-import faces from './faces/default'
+import defaultFaces from './faces/default'
 
 const Die = ({ 
   value, 
@@ -8,13 +8,13 @@ const Die = ({
   animate = true,           // Enable/disable animation
   animationDuration = 500,  // Animation duration in milliseconds
   enableFaces = true,       // Enable/disable custom faces
-  useDefaultFaces = true,   // Use default faces or custom faces
+  customFaces,              
 }) => {
-  const index = value - 1 
-  const [faceImage, setFaceImage] = useState(faces[index])
 
-  useEffect(() => { // Update the faceImage state when value changes
-    setFaceImage(faces[index])
+  const faces = customFaces || defaultFaces
+  const [faceImage, setFaceImage] = useState(faces[value - 1])
+  useEffect(() => { 
+    setFaceImage(faces[value - 1])
   }, [value])
 
   // Update baseStyle when faceImage changes
