@@ -19,10 +19,16 @@ function Dice({
   const [diceValues, setDiceValues] = useState(
     Array(numberOfDice).fill(defaultDieValue) 
   )
+
   useEffect(() => {
-    setDiceValues(Array(numberOfDice).fill(1)) 
-    calculateTotal()
-  }, [numberOfDice])
+    setDiceValues(Array(numberOfDice).fill(defaultDieValue)) 
+  }, [numberOfDice, defaultDieValue])
+
+  useEffect(() => {
+    if (!isRolling) {
+      calculateTotal()
+    }
+  }, [diceValues, isRolling])
 
   const playSFX = () => {
     const diceSound = numberOfDice === 1
@@ -34,18 +40,20 @@ function Dice({
     audio.play()
   }
   
-
   const calculateTotal = () => {
-    const total = diceValues.reduce((acc, curr) => acc + curr)
-    console.log('Total:', total)
+    const total = diceValues.reduce((acc, curr) => acc + curr, 0)
+    // console.log('Total:', total)
     return total
   }
 
   const handleRoll = () => {
     setIsRolling(true)
     playSFX()
-    setDiceValues(diceValues.map(() => Math.floor(Math.random() * numberOfFaces) + 1))
-    calculateTotal()
+    setDiceValues(prevDiceValues => {
+      const newValues = prevDiceValues.map(() => Math.floor(Math.random() * numberOfFaces) + 1)
+      return newValues
+    })
+    setIsRolling(false)
   }
 
   return (

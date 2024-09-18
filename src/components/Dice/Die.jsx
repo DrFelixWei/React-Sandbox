@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Typography } from '@mui/material'
+import faces from './faces/default'
 
 const Die = ({ 
   value, 
   dieSize = 60,             // Default size of the die
   animate = true,           // Enable/disable animation
   animationDuration = 500,  // Animation duration in milliseconds
+  enableFaces = true,       // Enable/disable custom faces
+  useDefaultFaces = true,   // Use default faces or custom faces
 }) => {
+  const index = value - 1 
+  const [faceImage, setFaceImage] = useState(faces[index])
 
+  useEffect(() => { // Update the faceImage state when value changes
+    setFaceImage(faces[index])
+  }, [value])
+
+  // Update baseStyle when faceImage changes
   const baseStyle = {
     display: 'flex',
     alignItems: 'center',
@@ -21,29 +31,22 @@ const Die = ({
     backgroundColor: 'white',
     fontWeight: 'bold',
     transition: `transform ${animationDuration}ms ease-in-out`,
+    backgroundImage: faceImage ? `url(${faceImage})` : 'none',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
   }
-  const rollStyle = { 
-
-  } 
-  // Animation effect
-  const [style, setStyle] = useState(baseStyle)
-  useEffect(() => {
-    if (animate) {
-    }
-  }, [])
 
   return (
-    <Box style={style}>
-      <Typography style={{ fontSize: `${dieSize * 0.5}px` }}>
-        {value}
-      </Typography>
+    <Box style={baseStyle}>
+      {
+        !enableFaces && (
+          <Typography style={{ fontSize: `${dieSize * 0.5}px` }}>
+            {value}
+          </Typography>
+        )
+      }
     </Box>
   )
 }
 
 export default Die
-
-
- // const faces = './images/faces/chess/white/light'
-  // const diceFaces = import.meta.glob('./images/faces/chess/white/light/*.{png,jpeg,jpg,svg}', { eager: true })
-  // const dieFaces = Object.values(diceFaces)
