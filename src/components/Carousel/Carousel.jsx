@@ -3,7 +3,7 @@ import './Carousel.css'
 
 function Carousel({
   carouselItems = [
-    { id: 1, content: <div>1</div> },
+    { id: 1, content: <div>1<button onClick={() => alert(`Button 1!`)}>Click Me</button></div> },
     { id: 2, content: <div>2</div> },
     { id: 3, content: <div>3</div> },
     { id: 4, content: <div>4</div> },
@@ -19,6 +19,7 @@ function Carousel({
   const lastMousePos = useRef(0)
   const lastMoveTo = useRef(0)
   const moveTo = useRef(0)
+  const rotationSpeed = 2
 
   const createCarousel = () => {
     const carouselProps = onResize()
@@ -41,7 +42,7 @@ function Carousel({
     })
   }
 
-  const lerp = (a, b, n) => n * (a - b) + b
+  const linearInterpolate = (a, b, n) => n * (a - b) + b
 
   const distanceZ = (widthElement, length, gap) => {
     return widthElement / 2 / Math.tan(Math.PI / length) + gap
@@ -64,15 +65,17 @@ function Carousel({
   }
 
   const getPosX = (x) => {
-    console.log("getPosX:", x)
     currentMousePos.current = x
-    console.log(currentMousePos.current < lastMousePos.current ? moveTo.current - 2 : moveTo.current + 2)
     moveTo.current = currentMousePos.current < lastMousePos.current ? moveTo.current - 2 : moveTo.current + 2
+
+    // Attempted to make carousel rotation bidirectional but it becomes too sensitive to mouse movement
+    // moveTo.current += currentMousePos.current - lastMousePos.current 
+
     lastMousePos.current = currentMousePos.current
   }
 
   const update = () => {
-    lastMoveTo.current = lerp(moveTo.current, lastMoveTo.current, 0.05)
+    lastMoveTo.current = linearInterpolate(moveTo.current, lastMoveTo.current, 0.05)
     carouselRef.current.style.setProperty('--rotatey', `${lastMoveTo.current}deg`)
     requestAnimationFrame(update)
   }
@@ -110,16 +113,35 @@ function Carousel({
     })
     containerRef.current.addEventListener('touchmove', (e) => isMouseDown.current && getPosX(e.touches[0].clientX))
 
+    window.addEventListener('keydown', handleKeyPress) // allow navigation with keyboard arrows
+
     window.addEventListener('resize', createCarousel)
 
     update()
     createCarousel()
   }
 
+  const handleKeyPress = (e) => {
+    switch (e.key) {
+      case 'ArrowLeft':
+        moveTo.current -= rotationSpeed
+        break
+      case 'ArrowRight':
+        moveTo.current += rotationSpeed
+        break
+      default:
+        break
+    }
+    // Update the carousel rotation immediately
+    carouselRef.current.style.setProperty('--rotatey', `${moveTo.current}deg`)
+  }
+
+
   useEffect(() => {
     initEvents()
     return () => {
       window.removeEventListener('resize', createCarousel)
+      window.removeEventListener('keydown', handleKeyPress)
     }
   }, [])
   
