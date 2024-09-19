@@ -2,8 +2,7 @@ import { useState } from 'react'
 import HorizontalCarousel from './HorizontalCarousel'
 import VerticalCarousel from './VerticalCarousel'
 import sfxFlip from './sfx_card_flip_1.mp3'
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 function Carousel({
   carouselItems = [
@@ -14,35 +13,75 @@ function Carousel({
     { id: 5, content: <div>5</div> },
     { id: 6, content: <div>6</div> },
   ],
-  arrowKeyNavigationType = 'tap', // 'tap' or 'continuous'
-  enableSfx = true,
   autospin = false, // future TODO
 }) {
 
   const [carouselType, setCarouselType] = useState('horizontal')
-  const handleToggleCarouselType = () => {
-    setCarouselType((prevType) => (prevType === 'horizontal' ? 'vertical' : 'horizontal'))
+  const handleToggleCarouselType = (event, newType) => {
+    if (newType !== null) {
+      setCarouselType(newType)
+    }
   }
 
+  const possibleArrowKeyNavigationTypes = ['tap', 'continuous']
+  const [arrowKeyNavigationType, setArrowKeyNavigationType] = useState('tap') 
+  const handleToggleArrowKeyNavigationType = (event, newType) => {
+    if (newType !== null) {
+      setArrowKeyNavigationType(newType)
+    }
+  }
+
+  const [enableSfx, setEnableSfx] = useState(true)
   const sfx = enableSfx ? new Audio(sfxFlip) : null
+  const handleToggleSfx = () => {
+    setEnableSfx((prev) => !prev)
+  }
 
   return (
     <>
       <div>Carousel</div>
       <br/>
 
-      <ToggleButtonGroup
-        color="primary"
-        value={carouselType}
-        exclusive
-        onChange={handleToggleCarouselType}
-        aria-label="Platform"
-        sx={{backgroundColor: 'lightgray'}}
-      >
-        <ToggleButton value="horizontal" disabled={carouselType === "horizontal"}>Horizontal</ToggleButton>
-        <ToggleButton value="vertical" disabled={carouselType === "vertical"}>Vertical</ToggleButton>
-      </ToggleButtonGroup>
-      
+      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+
+        <ToggleButtonGroup
+          size="small"
+          color="primary"
+          value={carouselType}
+          exclusive
+          onChange={handleToggleCarouselType}
+          aria-label="Carousel Type"
+          sx={{backgroundColor: 'lightgray'}}
+        >
+          <ToggleButton size="small" value="horizontal">Horizontal</ToggleButton>
+          <ToggleButton size="small" value="vertical">Vertical</ToggleButton>
+        </ToggleButtonGroup>
+
+        <ToggleButtonGroup
+          size="small"
+          color="primary"
+          value={arrowKeyNavigationType}
+          exclusive
+          onChange={handleToggleArrowKeyNavigationType}
+          aria-label="Arrow Key Navigation"
+          sx={{backgroundColor: 'lightgray'}}
+        >
+          <ToggleButton size="small" value="tap">Tap</ToggleButton>
+          <ToggleButton size="small" value="continuous">Continuous</ToggleButton>
+        </ToggleButtonGroup>
+
+        <ToggleButton
+          size="small"
+          color="primary"
+          value={enableSfx}
+          onClick={handleToggleSfx}
+          aria-label="Enable Sound"
+          sx={{backgroundColor: 'lightgray'}}
+        >
+          {enableSfx ? 'Disable Sound' : 'Enable Sound'}
+        </ToggleButton>
+
+      </Box>
 
       <br/>
 

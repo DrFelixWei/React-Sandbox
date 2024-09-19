@@ -183,7 +183,7 @@ function VerticalCarousel({
       window.removeEventListener('resize', createCarousel)
       window.removeEventListener('keydown', handleKeyPress)
     }
-  }, [])
+  }, [arrowKeyNavigationType, sfx])
 
   const handleCarouselItemDoubleClick = (id) => {
     let newMoveTo = 360 / carouselItems.length * (carouselItems.length - id + 1)

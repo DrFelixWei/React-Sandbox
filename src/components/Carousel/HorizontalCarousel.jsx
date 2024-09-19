@@ -188,7 +188,7 @@ function HorizontalCarousel({
       window.removeEventListener('resize', createCarousel)
       window.removeEventListener('keydown', handleKeyPress)
     }
-  }, [])
+  }, [arrowKeyNavigationType, sfx])
   
 
   const handleCarouselItemDoubleClick = (id) => {
