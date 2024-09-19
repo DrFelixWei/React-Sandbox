@@ -14,8 +14,9 @@ function Carousel({
     { id: 5, content: <div>5</div> },
     { id: 6, content: <div>6</div> },
   ],
-  enableArrowKeyNavigation = true,
+  arrowKeyNavigationType = 'tap', // 'tap' or 'continuous'
   enableSfx = true,
+  autospin = false, // future TODO
 }) {
 
   const [carouselType, setCarouselType] = useState('horizontal')
@@ -38,8 +39,8 @@ function Carousel({
         aria-label="Platform"
         sx={{backgroundColor: 'lightgray'}}
       >
-        <ToggleButton value="horizontal">Horizontal</ToggleButton>
-        <ToggleButton value="vertical">Vertical</ToggleButton>
+        <ToggleButton value="horizontal" disabled={carouselType === "horizontal"}>Horizontal</ToggleButton>
+        <ToggleButton value="vertical" disabled={carouselType === "vertical"}>Vertical</ToggleButton>
       </ToggleButtonGroup>
       
 
@@ -48,7 +49,7 @@ function Carousel({
       {carouselType === 'horizontal' && (
         <HorizontalCarousel
           carouselItems={carouselItems}
-          enableArrowKeyNavigation={enableArrowKeyNavigation}
+          arrowKeyNavigationType={arrowKeyNavigationType}
           sfx={sfx}
         />
       )}
@@ -56,7 +57,7 @@ function Carousel({
       {carouselType === 'vertical' && (
         <VerticalCarousel
           carouselItems={carouselItems}
-          enableArrowKeyNavigation={enableArrowKeyNavigation}
+          arrowKeyNavigationType={arrowKeyNavigationType}
           sfx={sfx}
         />
       )}

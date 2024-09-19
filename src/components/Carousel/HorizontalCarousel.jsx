@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react'
 import './HorizontalCarousel.css'
 
+const DEBOUNCER_INTERVAL = 500 // used to delay the carousel rotation when key is held down
+
 function HorizontalCarousel({
   carouselItems,
-  enableArrowKeyNavigation,
+  arrowKeyNavigationType,
   sfx,
 }) {
   const containerRef = useRef(null)
@@ -15,6 +17,8 @@ function HorizontalCarousel({
   const lastMoveTo = useRef(0)
   const moveTo = useRef(0)
   const rotationSpeed = 2
+
+  const tapDisabled = useRef(false)
 
   const createCarousel = () => {
     const carouselProps = onResize()
@@ -108,9 +112,10 @@ function HorizontalCarousel({
     })
     containerRef.current.addEventListener('touchmove', (e) => isMouseDown.current && getPosX(e.touches[0].clientX))
 
-
-    if (enableArrowKeyNavigation) {
-      window.addEventListener('keydown', handleKeyPress) // allow navigation with keyboard arrows
+    // allow navigation with keyboard arrows
+    if (arrowKeyNavigationType) {
+      window.addEventListener('keydown', handleKeyPress) 
+      window.addEventListener('keyup', handleKeyRelease)
     }
 
     window.addEventListener('resize', createCarousel)
@@ -120,6 +125,19 @@ function HorizontalCarousel({
   }
 
   const handleKeyPress = (e) => {
+    if (arrowKeyNavigationType === 'tap') { 
+      if (tapDisabled.current) return
+      handleKeyPressTap(e)
+    } else {
+      handleKeyPressContinuous(e)
+    }
+  }
+
+  const handleKeyRelease = () => {
+    tapDisabled.current = false
+  }
+
+  const handleKeyPressContinuous = (e) => {
     switch (e.key) {
       case 'ArrowLeft':
         moveTo.current -= rotationSpeed
@@ -132,6 +150,35 @@ function HorizontalCarousel({
     }
     // Update the carousel rotation immediately
     carouselRef.current.style.setProperty('--rotatey', `${moveTo.current}deg`)
+  }
+
+  const handleKeyPressTap = (e) => {
+    tapDisabled.current = true
+    setTimeout(() => {
+      tapDisabled.current = false
+    }, DEBOUNCER_INTERVAL)
+
+    const key = e.key
+
+    const itemPortion = 360 / carouselItems.length
+    let fullRotations = Math.floor(moveTo.current / 360)
+    if (moveTo.current < 0 && moveTo.current % 360 !== 0) fullRotations += 1
+
+    let remainder = moveTo.current % 360
+    let partialRotations = Math.floor(remainder / itemPortion)
+    if (remainder < 0 && remainder % itemPortion !== 0) partialRotations += 1
+
+    let currentItemPos = fullRotations * 360 + partialRotations * itemPortion
+
+    if (key === 'ArrowLeft') {
+      moveTo.current = currentItemPos + itemPortion
+      sfx?.play()
+    } else if (key === 'ArrowRight') {
+      moveTo.current = currentItemPos - itemPortion
+      sfx?.play()
+    }
+
+    carouselRef.current.style.setProperty('--rotatex', `${moveTo.current}deg`)
   }
 
 
