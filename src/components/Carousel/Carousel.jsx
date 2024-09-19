@@ -10,12 +10,13 @@ function Carousel() {
   const lastMousePos = useRef(0);
   const lastMoveTo = useRef(0);
   const moveTo = useRef(0);
+  const rotationStep = useRef(0); // To track rotation step for snapping
 
   const createCarousel = () => {
     const carouselProps = onResize();
     const carouselItems = carouselRef.current.querySelectorAll('.carousel-item');
     const length = carouselItems.length;
-    const degress = 360 / length;
+    const degrees = 360 / length;
     const gap = 20;
     const tz = distanceZ(carouselProps.w, length, gap);
 
@@ -26,9 +27,11 @@ function Carousel() {
     containerRef.current.style.height = `${height}px`;
 
     carouselItems.forEach((item, i) => {
-      const degressByItem = `${degress * i}deg`;
-      item.style.setProperty('--rotatey', degressByItem);
+      const degreesByItem = `${degrees * i}deg`;
+      item.style.setProperty('--rotatey', degreesByItem);
       item.style.setProperty('--tz', `${tz}px`);
+      // Add double-click event listener to each item
+      item.addEventListener('dblclick', () => snapToCenter(degrees * i));
     });
   };
 
@@ -56,7 +59,7 @@ function Carousel() {
 
   const getPosX = (x) => {
     currentMousePos.current = x;
-    moveTo.current = currentMousePos.current < lastMousePos.current ? moveTo.current - 2 : moveTo.current + 2;
+    moveTo.current += (currentMousePos.current - lastMousePos.current) * 0.2;
     lastMousePos.current = currentMousePos.current;
   };
 
@@ -72,6 +75,17 @@ function Carousel() {
       w: boundingCarousel.width,
       h: boundingCarousel.height,
     };
+  };
+
+  const snapToCenter = (targetAngle) => {
+    // Calculate the difference between the target angle and the current angle
+    const currentAngle = lastMoveTo.current % 360;
+    const angleDiff = targetAngle - currentAngle;
+    const halfTurn = Math.sign(angleDiff) * 180; // Adjusting to rotate in the shortest direction
+
+    // Update moveTo to snap to the center of the clicked item
+    moveTo.current += angleDiff;
+    rotationStep.current = angleDiff; // Store the rotation step for smooth snapping
   };
 
   const initEvents = () => {
@@ -111,6 +125,24 @@ function Carousel() {
       window.removeEventListener('resize', createCarousel);
     };
   }, []);
+
+  useEffect(() => {
+    // Smooth snapping effect
+    if (rotationStep.current) {
+      const snapUpdate = () => {
+        lastMoveTo.current = lerp(lastMoveTo.current, moveTo.current, 0.1);
+        carouselRef.current.style.setProperty('--rotatey', `${lastMoveTo.current}deg`);
+
+        if (Math.abs(lastMoveTo.current - moveTo.current) > 0.1) {
+          requestAnimationFrame(snapUpdate);
+        } else {
+          rotationStep.current = 0; // Reset the rotation step when snapping is complete
+        }
+      };
+
+      snapUpdate();
+    }
+  }, [moveTo.current]);
 
   return (
     <>
