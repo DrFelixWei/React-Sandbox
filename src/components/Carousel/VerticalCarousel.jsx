@@ -4,6 +4,7 @@ import './VerticalCarousel.css'
 function VerticalCarousel({
   carouselItems,
   enableArrowKeyNavigation,
+  sfx,
 }) {
   const containerRef = useRef(null)
   const containerCarouselRef = useRef(null)
@@ -141,6 +142,7 @@ function VerticalCarousel({
     let newMoveTo = 360 / carouselItems.length * (carouselItems.length - id + 1)
     moveTo.current = newMoveTo
     lastMousePos.current = currentMousePos.current
+    sfx?.play()
   }
 
   return (

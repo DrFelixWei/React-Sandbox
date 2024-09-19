@@ -4,6 +4,7 @@ import './HorizontalCarousel.css'
 function HorizontalCarousel({
   carouselItems,
   enableArrowKeyNavigation,
+  sfx,
 }) {
   const containerRef = useRef(null)
   const containerCarouselRef = useRef(null)
@@ -147,6 +148,7 @@ function HorizontalCarousel({
     let newMoveTo = 360 / carouselItems.length * (carouselItems.length - id + 1)
     moveTo.current = newMoveTo
     lastMousePos.current = currentMousePos.current
+    sfx?.play()
   }
 
   return (

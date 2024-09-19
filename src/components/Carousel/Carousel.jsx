@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import HorizontalCarousel from './HorizontalCarousel'
 import VerticalCarousel from './VerticalCarousel'
+import sfxFlip from './sfx_card_flip_1.mp3'
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
@@ -14,12 +15,15 @@ function Carousel({
     { id: 6, content: <div>6</div> },
   ],
   enableArrowKeyNavigation = true,
+  enableSfx = true,
 }) {
 
   const [carouselType, setCarouselType] = useState('horizontal')
   const handleToggleCarouselType = () => {
     setCarouselType((prevType) => (prevType === 'horizontal' ? 'vertical' : 'horizontal'))
   }
+
+  const sfx = enableSfx ? new Audio(sfxFlip) : null
 
   return (
     <>
@@ -45,6 +49,7 @@ function Carousel({
         <HorizontalCarousel
           carouselItems={carouselItems}
           enableArrowKeyNavigation={enableArrowKeyNavigation}
+          sfx={sfx}
         />
       )}
 
@@ -52,6 +57,7 @@ function Carousel({
         <VerticalCarousel
           carouselItems={carouselItems}
           enableArrowKeyNavigation={enableArrowKeyNavigation}
+          sfx={sfx}
         />
       )}
      
