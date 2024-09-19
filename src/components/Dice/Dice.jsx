@@ -64,7 +64,9 @@ function Dice({
 
   return (
     <>
-      Dice
+      <div>Dice</div>
+      <br/>
+      
       <div
         style={{
           display: 'flex',
