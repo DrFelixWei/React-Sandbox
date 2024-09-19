@@ -10,6 +10,7 @@ function Carousel({
     { id: 5, content: <div>5</div> },
     { id: 6, content: <div>6</div> },
   ],
+  enableArrowKeyNavigation = false,
 }) {
   const containerRef = useRef(null)
   const containerCarouselRef = useRef(null)
@@ -113,7 +114,10 @@ function Carousel({
     })
     containerRef.current.addEventListener('touchmove', (e) => isMouseDown.current && getPosX(e.touches[0].clientX))
 
-    window.addEventListener('keydown', handleKeyPress) // allow navigation with keyboard arrows
+
+    if (enableArrowKeyNavigation) {
+      window.addEventListener('keydown', handleKeyPress) // allow navigation with keyboard arrows
+    }
 
     window.addEventListener('resize', createCarousel)
 
