@@ -10,9 +10,9 @@ https://myreactsandbox.netlify.app/
 
 ## Features
 
-# Dice
+### Dice
 The Dice component allows you render multiple customizable dice and roll them.
 You can customize the face art for the dice (example in the chess pieces folder).
 Animation and sound effects are integrated.
 
-# Carousel
+### Carousel
