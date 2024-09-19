@@ -109,7 +109,7 @@ function VerticalCarousel({
     containerRef.current.addEventListener('touchmove', (e) => isMouseDown.current && getPosY(e.touches[0].clientY))
 
     // allow navigation with keyboard arrows
-    if (arrowKeyNavigationType) {
+    if (arrowKeyNavigationType === 'tap' || arrowKeyNavigationType === 'hold') {
       window.addEventListener('keydown', handleKeyPress) 
       window.addEventListener('keyup', handleKeyRelease)
     }
@@ -124,8 +124,8 @@ function VerticalCarousel({
     if (arrowKeyNavigationType === 'tap') { 
       if (tapDisabled.current) return
       handleKeyPressTap(e)
-    } else if (arrowKeyNavigationType === 'continuous') {
-      handleKeyPressContinuous(e)
+    } else if (arrowKeyNavigationType === 'hold') {
+      handleKeyPressHold(e)
     }
   }
 
@@ -133,12 +133,12 @@ function VerticalCarousel({
     tapDisabled.current = false
   }
 
-  const handleKeyPressContinuous = (e) => {
+  const handleKeyPressHold = (e) => {
     switch (e.key) {
-      case 'ArrowUp':
+      case 'ArrowDown':
         moveTo.current += rotationSpeed
         break
-      case 'ArrowDown':
+      case 'ArrowUp':
         moveTo.current -= rotationSpeed
         break
       default:
@@ -191,6 +191,16 @@ function VerticalCarousel({
     lastMousePos.current = currentMousePos.current
     sfx?.play()
   }
+
+  useEffect(() => {
+    if (arrowKeyNavigationType === 'automatic') {
+      const interval = setInterval(() => {
+        moveTo.current += rotationSpeed * 0.5
+        carouselRef.current.style.setProperty('--rotatey', `${moveTo.current}deg`)
+      }, 50)
+      return () => clearInterval(interval)
+    }
+  }, [arrowKeyNavigationType])
 
   return (
     <>

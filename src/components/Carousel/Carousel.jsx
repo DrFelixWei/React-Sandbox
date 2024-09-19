@@ -13,7 +13,6 @@ function Carousel({
     { id: 5, content: <div>5</div> },
     { id: 6, content: <div>6</div> },
   ],
-  autospin = false, // future TODO
 }) {
 
   const [carouselType, setCarouselType] = useState('horizontal')
@@ -23,12 +22,11 @@ function Carousel({
     }
   }
 
-  const possibleArrowKeyNavigationTypes = ['tap', 'continuous']
+  const possibleArrowKeyNavigationTypes = ['tap', 'hold', 'automatic']
   const [arrowKeyNavigationType, setArrowKeyNavigationType] = useState('tap') 
   const handleToggleArrowKeyNavigationType = (event, newType) => {
-    if (newType !== null) {
-      setArrowKeyNavigationType(newType)
-    }
+    if (!possibleArrowKeyNavigationTypes.includes(newType)) return
+    if (newType !== null) setArrowKeyNavigationType(newType) 
   }
 
   const [enableSfx, setEnableSfx] = useState(true)
@@ -67,7 +65,8 @@ function Carousel({
           sx={{backgroundColor: 'lightgray'}}
         >
           <ToggleButton size="small" value="tap">Tap</ToggleButton>
-          <ToggleButton size="small" value="continuous">Continuous</ToggleButton>
+          <ToggleButton size="small" value="hold">Hold</ToggleButton>
+          <ToggleButton size="small" value="automatic">Automatic</ToggleButton>
         </ToggleButtonGroup>
 
         <ToggleButton
@@ -98,6 +97,7 @@ function Carousel({
           carouselItems={carouselItems}
           arrowKeyNavigationType={arrowKeyNavigationType}
           sfx={sfx}
+          style={{width: '100vw'}}
         />
       )}
      

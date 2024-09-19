@@ -113,7 +113,7 @@ function HorizontalCarousel({
     containerRef.current.addEventListener('touchmove', (e) => isMouseDown.current && getPosX(e.touches[0].clientX))
 
     // allow navigation with keyboard arrows
-    if (arrowKeyNavigationType) {
+    if (arrowKeyNavigationType === 'tap' || arrowKeyNavigationType === 'hold') {
       window.addEventListener('keydown', handleKeyPress) 
       window.addEventListener('keyup', handleKeyRelease)
     }
@@ -129,7 +129,7 @@ function HorizontalCarousel({
       if (tapDisabled.current) return
       handleKeyPressTap(e)
     } else {
-      handleKeyPressContinuous(e)
+      handleKeyPressHold(e)
     }
   }
 
@@ -137,7 +137,7 @@ function HorizontalCarousel({
     tapDisabled.current = false
   }
 
-  const handleKeyPressContinuous = (e) => {
+  const handleKeyPressHold = (e) => {
     switch (e.key) {
       case 'ArrowLeft':
         moveTo.current -= rotationSpeed
@@ -197,6 +197,16 @@ function HorizontalCarousel({
     lastMousePos.current = currentMousePos.current
     sfx?.play()
   }
+
+  useEffect(() => {
+    if (arrowKeyNavigationType === 'automatic') {
+      const interval = setInterval(() => {
+        moveTo.current -= rotationSpeed * 0.5
+        carouselRef.current.style.setProperty('--rotatey', `${moveTo.current}deg`)
+      }, 50)
+      return () => clearInterval(interval)
+    }
+  }, [arrowKeyNavigationType])
 
   return (
     <>

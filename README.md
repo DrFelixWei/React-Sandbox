@@ -16,3 +16,5 @@ You can customize the face art for the dice (example in the chess pieces folder)
 Animation and sound effects are integrated.
 
 ### Carousel
+The Carousel component provides a 3D carousel spinner that displays a dynamic number of items.
+You can customize the art, sfx, and controls. 
