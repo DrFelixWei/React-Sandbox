@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import Home from './pages/Home' 
 import Dice from './components/Dice/Dice.jsx'
+import Carousel from './components/Carousel/Carousel.jsx'
 
 const theme = createTheme({
   palette: {
@@ -48,6 +49,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/dice" element={<Dice />} />
+              <Route path="/carousel" element={<Carousel />} />
             </Routes>
           </Content>
         </Root>

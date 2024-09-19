@@ -1,8 +1,18 @@
-# React + Vite
+## Project Description
+MY REACT SANDBOX is a collection of interesting custom React components I built for future use. 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Contributors
+- Felix Wei
 
-Currently, two official plugins are available:
+## Hosting
+https://myreactsandbox.netlify.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Features
+
+# Dice
+The Dice component allows you render multiple customizable dice and roll them.
+You can customize the face art for the dice (example in the chess pieces folder).
+Animation and sound effects are integrated.
+
+# Carousel

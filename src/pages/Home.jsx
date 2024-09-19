@@ -27,7 +27,10 @@ function Home() {
 
       <LinkList>
         {/* <PageLink href="/" target="_blank">Home</PageLink> */}
+        
         <PageLink href="/dice" >Dice</PageLink>
+        <PageLink href="/carousel" >Carousel</PageLink>
+        
       </LinkList>
     </Box>
   )

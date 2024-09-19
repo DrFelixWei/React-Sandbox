@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { Box } from '@mui/material'
 import Die from './Die'
 
 import sfxSingle from './sfx/sfx_dice_felt_single_1.mp3'
@@ -20,7 +19,7 @@ function Dice({
   const [diceValues, setDiceValues] = useState(
     Array(numberOfDice).fill(defaultDieValue) 
   )
-  const [rollKey, setRollKey] = useState(0)  // Key to force re-render of Die components
+  const [rollKey, setRollKey] = useState(0)
 
   useEffect(() => {
     setDiceValues(Array(numberOfDice).fill(defaultDieValue)) 
@@ -58,7 +57,6 @@ function Dice({
       return newValues
     })
 
-    // Force re-render of Die components by changing the rollKey
     setRollKey(prevKey => prevKey + 1)
 
     setIsRolling(false)
@@ -66,27 +64,27 @@ function Dice({
 
   return (
     <>
-      <Box
-        display="flex"
-        flexWrap="wrap"
-        alignItems="center"
-        justifyContent="center"
-        width="100%"
-        onClick={handleRoll}
-        sx={{
+      Dice
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
           maxWidth: rowWidth, 
-          gap: 3, 
+          gap: '24px', 
         }}
+        onClick={handleRoll}
       >
         {diceValues.map((value, index) => (
           <Die 
-            key={`${index}-${rollKey}`}  // Use rollKey to force re-render
+            key={`${index}-${rollKey}`}
             value={value} 
             dieSize={dieSize} 
-            // customDieFaces={chessWhiteLightFaces}
           />
         ))}
-      </Box>
+      </div>
     </>
   )
 }

@@ -4,7 +4,7 @@ function Carousel() {
 
   return (
     <>
-    
+      Carousel
     </>
   )
 }
