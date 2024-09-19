@@ -18,6 +18,7 @@ function VerticalCarousel({
   const moveTo = useRef(0)
   const rotationSpeed = 2
   const tapDisabled = useRef(false)
+  const carouselItemMinWidth = '300px'
 
   const createCarousel = () => {
     const carouselProps = onResize()
@@ -204,10 +205,10 @@ function VerticalCarousel({
 
   return (
     <>
-      <div className="content">
-        <div className="container" ref={containerRef}>
-          <div className="container-vertical-carousel" ref={containerCarouselRef}>
-            <div className="vertical-carousel" ref={carouselRef}>
+      <div className="content" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div className="container" ref={containerRef} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div className="container-vertical-carousel" ref={containerCarouselRef} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div className="vertical-carousel" ref={carouselRef} style={{ minWidth: carouselItemMinWidth, display: 'flex', flexDirection: 'column' }}>
               {carouselItems.map((item) => (
                 <div key={item.id} className="vertical-carousel-item" onDoubleClick={() => handleCarouselItemDoubleClick(item.id)}>
                   {item.content}
