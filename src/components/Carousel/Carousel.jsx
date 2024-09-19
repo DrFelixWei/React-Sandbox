@@ -1,7 +1,16 @@
 import { useEffect, useRef } from 'react';
 import './Carousel.css';
 
-function Carousel() {
+function Carousel({
+  carouselItems = [
+    { id: 1, content: <div>1</div> },
+    { id: 2, content: <div>2</div> },
+    { id: 3, content: <div>3</div> },
+    { id: 4, content: <div>4</div> },
+    { id: 5, content: <div>5</div> },
+    { id: 6, content: <div>6</div> },
+  ],
+}) {
   const containerRef = useRef(null);
   const containerCarouselRef = useRef(null);
   const carouselRef = useRef(null);
@@ -120,12 +129,14 @@ function Carousel() {
         <div className="container" ref={containerRef}>
           <div className="container-carousel" ref={containerCarouselRef}>
             <div className="carousel" ref={carouselRef}>
-              <div className="carousel-item"></div>
-              <div className="carousel-item"></div>
-              <div className="carousel-item"></div>
-              <div className="carousel-item"></div>
-              <div className="carousel-item"></div>
-              <div className="carousel-item"></div>
+
+              {carouselItems.map((item) => (
+                <div key={item.id} className="carousel-item">
+                  {item.content}
+                </div>
+              ))}
+              
+
             </div>
           </div>
         </div>
