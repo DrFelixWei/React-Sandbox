@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Die from './Die'
+import { Box, ToggleButton, ToggleButtonGroup, Slider } from '@mui/material';
 
 import sfxSingle from './sfx/sfx_dice_felt_single_1.mp3'
 import sfxThree from './sfx/sfx_dice_felt_three_1.mp3'
@@ -7,13 +8,19 @@ import sfxSix from './sfx/sfx_dice_felt_six_1.mp3'
 
 import chessWhiteLightFaces from './faces/chess/white/light'
 
+const MAX_NUMBER_OF_DICE = 6
+
 function Dice({
-  numberOfDice = 3, 
   numberOfFaces = 6, 
-  defaultDieValue = 1,
+  defaultDieValue = 6,
   dieSize = 100,
   rowWidth = '400px', 
 }) {
+
+  const [numberOfDice, setNumberOfDice] = useState(3)
+  const handleNumberOfDiceChange = (event, newValue) => {
+    setNumberOfDice(newValue)
+  }
 
   const [isRolling, setIsRolling] = useState(false)
   const [diceValues, setDiceValues] = useState(
@@ -62,9 +69,46 @@ function Dice({
     setIsRolling(false)
   }
 
+  const [customDieFaces, setCustomDieFaces] = useState('default')
+  const handleToggleCustomDieFaces = (event, newFace) => {
+    setCustomDieFaces(newFace)
+  }
+
   return (
     <>
       <div>Dice</div>
+      <br/>
+
+      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+
+        <Slider
+          value={numberOfDice}
+          min={1}
+          max={MAX_NUMBER_OF_DICE}
+          step={1}
+          onChange={handleNumberOfDiceChange}
+          aria-labelledby="number-of-dice-slider"
+          sx={{ 
+            minWidth: '150px',
+            height: 12,
+           }}
+        />
+
+        <ToggleButtonGroup
+          size="small"
+          color="primary"
+          value={customDieFaces}
+          exclusive
+          onChange={handleToggleCustomDieFaces}
+          aria-label="Toggle Custom Die Faces"
+          sx={{backgroundColor: 'lightgray'}}
+        >
+          <ToggleButton size="small" value="default" disabled={customDieFaces==='default'}>Default</ToggleButton>
+          <ToggleButton size="small" value="chess" disabled={customDieFaces==='chess'}>Chess</ToggleButton>
+        </ToggleButtonGroup>
+
+      </Box>
+
       <br/>
       
       <div
@@ -84,6 +128,7 @@ function Dice({
             key={`${index}-${rollKey}`}
             value={value} 
             dieSize={dieSize} 
+            customDieFaces={customDieFaces === 'chess' ? chessWhiteLightFaces : null}
           />
         ))}
       </div>

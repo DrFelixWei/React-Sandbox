@@ -8,7 +8,6 @@ const Die = ({
   dieSize = 60, 
   animate = true, 
   animationDuration = 500, 
-  enableFaces = true, 
   customDieFaces, 
 }) => {
   const faces = customDieFaces || defaultFaces
