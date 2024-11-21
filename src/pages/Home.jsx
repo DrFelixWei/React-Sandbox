@@ -30,6 +30,7 @@ function Home() {
         
         <PageLink href="/dice" >Dice</PageLink>
         <PageLink href="/carousel" >Carousel</PageLink>
+        <PageLink href="/card" >Card</PageLink>
         
       </LinkList>
     </Box>
